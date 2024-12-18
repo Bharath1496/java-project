@@ -1,0 +1,48 @@
+CREATE TABLE flowchart (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+CREATE TABLE node (
+    id INT PRIMARY KEY,
+    flowchart_id INT NOT NULL,
+    label VARCHAR(255) NOT NULL,
+    FOREIGN KEY (flowchart_id) REFERENCES flowchart(id) ON DELETE CASCADE
+);
+CREATE TABLE edge (
+    id INT PRIMARY KEY,
+    flowchart_id INT NOT NULL,
+    from_node_id INT NOT NULL,
+    to_node_id INT NOT NULL,
+    FOREIGN KEY (flowchart_id) REFERENCES flowchart(id) ON DELETE CASCADE,
+    FOREIGN KEY (from_node_id) REFERENCES node(id) ON DELETE CASCADE,
+    FOREIGN KEY (to_node_id) REFERENCES node(id) ON DELETE CASCADE
+);
+
+INSERT INTO flowchart (id, name) VALUES
+(1, 'Flowchart 1'),
+(2, 'Flowchart 2'),
+(3, 'Flowchart 3');
+
+INSERT INTO node (id, flowchart_id, label) VALUES
+(101, 1, 'Start Node 1'),
+(102, 1, 'Intermediate 1'),
+(103, 1, 'End Node 1'),
+
+(201, 2, 'Start Node 2'),
+(202, 2, 'Intermediate 2'),
+(203, 2, 'End Node 2'),
+
+(301, 3, 'Start Node 3'),
+(302, 3, 'Intermediate 3'),
+(303, 3, 'End Node 3');
+
+INSERT INTO edge (id, flowchart_id, from_node_id, to_node_id) VALUES
+(1, 1, 101, 102),
+(2, 1, 102, 103),
+(3, 1, 103, 302),
+
+(4, 2, 201, 202),
+(5, 2, 202, 203),
+
+(6, 3, 301, 302),
+(7, 3, 302, 303);
